@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+        college_db:
+                container_name: pg_container
+                image: postgres
+                ports:
+                        - "5432:5432"
+                environment:
+                        - POSTGRES_USER=postgres
+                        - POSTGRES_PASSWORD=postgres
+                        - POSTGRES_DB=college_db
+                volumes:
+                        - ./dbs/postgres-data:/var/lib/postgresql
+        pgadmin:
+                container_name: pgadmin4_container
+                image: dpage/pgadmin4
+                environment:
+                        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+                        PGADMIN_DEFAULT_PASSWORD: root
+                ports:
+                        - "5050:80"
+                depends_on:
+                        -  college_db
+        backend:
+                depends_on:
+                        - college_db
+                container_name: college_backend
+                build: .
+                command: bash -c "
+                        sleep 5 &&
+                        python3 manage.py makemigrations && python3 manage.py migrate &&
+                        python3 manage.py runserver 0.0.0.0:8000";
+                volumes:
+                        - ./college_app:/college_app
+                ports:
+                        - "8000:8000"
+        frontend:
+                container_name: college_frontend
+                build: ./college_vue
+                volumes:
+                        - ./college_vue:/college_vue
+                        - /college_vue/node_modules
+                ports:
+                        - "8080:8080"
+                depends_on:
+                        - backend
