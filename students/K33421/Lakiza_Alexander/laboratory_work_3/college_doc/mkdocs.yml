@@ -64,5 +64,10 @@ nav:
           - "pair list": pair/list.md
           - "pair create": pair/create.md
           - "pair delete/update/retrieve": pair/edit.md
+  - Semester2:
+      - Lab1:
+          - "Migrations in Docker container": semestr2/lab1/1_1.md
+          - "Orchestration": semestr2/lab1/1_2.md
+
 theme:
   name: material
