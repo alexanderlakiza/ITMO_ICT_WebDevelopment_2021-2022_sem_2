@@ -68,6 +68,10 @@ nav:
       - Lab1:
           - "Migrations in Docker container": semestr2/lab1/1_1.md
           - "Orchestration": semestr2/lab1/1_2.md
+      - Lab2:
+          - "Hand-made filters": semestr2/lab2/2_1_1.md
+          - "Django filters": semestr2/lab2/2_1_2.md
 
 theme:
   name: material
+  palette: teal

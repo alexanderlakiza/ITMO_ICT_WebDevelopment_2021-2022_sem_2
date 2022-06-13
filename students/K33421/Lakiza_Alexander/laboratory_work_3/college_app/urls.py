@@ -35,4 +35,15 @@ urlpatterns = [
     path('stugroup/list/', StudentToGroupListView.as_view()),
     path('stugroup/<int:pk>/', StudentToGroupAllView.as_view()),
     path('stugroup/create/', StudentToGroupCreateView.as_view()),
+
+    # hand filters
+    path('student_by_group/', StudentsByGroupListView.as_view()),
+    path('pair_by_day_group/', PairByDayGroupListView.as_view()),
+    path('pair_by_day_room/', PairByRoomDayListView.as_view()),
+
+    # auto filters
+    path('mark_ordered/', MarkOrderedFilterView.as_view()),
+    # path('rings_search/', RingSearchFilterView.as_view()),
+    # path('participant_age_range/',
+    #      ParticipantAgeRangeFilterView.as_view())
 ]
