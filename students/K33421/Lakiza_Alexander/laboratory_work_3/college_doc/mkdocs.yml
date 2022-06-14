@@ -71,7 +71,12 @@ nav:
       - Lab2:
           - "Hand-made filters": semestr2/lab2/2_1_1.md
           - "Django filters": semestr2/lab2/2_1_2.md
+          - "Pagination": semestr2/lab2/2_2.md
+          - "File upload": semestr2/lab2/2_3.md
+          - "Signals": semestr2/lab2/2_4.md
 
 theme:
   name: material
-  palette: teal
+  palette:
+    primary: pink
+    accent: red
