@@ -76,3 +76,9 @@ class StudentToGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentToGroup
         fields = "__all__"
+
+
+class StudentPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentPhoto
+        fields = ['student', 'file']

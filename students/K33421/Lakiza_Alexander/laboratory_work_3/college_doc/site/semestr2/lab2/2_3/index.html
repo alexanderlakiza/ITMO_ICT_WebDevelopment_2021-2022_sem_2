@@ -63,6 +63,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#no2-drf" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -1564,10 +1569,70 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          File upload
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         File upload
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    2_3 Задание
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    Выполнение задания
+  </a>
+  
+    <nav class="md-nav" aria-label="Выполнение задания">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    Эндпоинт для загрузки файла
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    Эндпоинт для загрузки нескольких файлов
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1618,6 +1683,50 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    2_3 Задание
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    Выполнение задания
+  </a>
+  
+    <nav class="md-nav" aria-label="Выполнение задания">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    Эндпоинт для загрузки файла
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    Эндпоинт для загрузки нескольких файлов
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1631,9 +1740,86 @@
                 
 
 
-  <h1>File upload</h1>
+<h1 id="no2-drf">Лабораторная работа №2. Возможности DRF.</h1>
+<h2 id="2_3">2_3 Задание</h2>
+<p>Реализовать следующие ендпоинты:</p>
+<ul>
+<li>Ендпоинт для загрузки файлов, с указанием внешнего ключа на связный объект и сохранением имени и размера файла в базе данных.</li>
+<li>Ендпоинт для сохранения нескольких файлов и валидации на максимальный размер файла и доступные для загрузки расширения файлов.
+Код и пример вывода описать в mkdocs на странице с названием " 2.3.1 Загрузка и валидация файлов"</li>
+</ul>
+<hr />
+<h2 id="_1">Выполнение задания</h2>
+<p><code>validators.py</code></p>
+<pre><code class="language-python">def validate_file_size(file):
+    MAX_MB = 5
+    limit = MAX_MB * 1024 * 1024
+
+    if file.size &gt; limit:
+        raise ValidationError(f'The file size is more than {MAX_MB} MB.')
 
 
+def validate_file_type(file):
+    photo_extensions = ['image/png', 'image/jpeg', 'image/jpg']
+
+    content_type = magic.from_buffer(file.read(), mime=True)
+    if content_type not in photo_extensions:
+        raise ValidationError(f'Files of type {content_type} are not supported.')
+</code></pre>
+<p><code>models.py</code></p>
+<pre><code class="language-python">def get_upload_path(instance, filename):
+    return f'students_photos/photos_of_student_{instance.student.id}/{filename}'
+
+
+class StudentPhoto(models.Model):
+    student = models.ForeignKey('Student',
+                                    on_delete=models.CASCADE,
+                                    related_name='student_photos')
+    file = models.FileField(
+        validators=[validate_file_size, validate_file_type],
+        upload_to=get_upload_path
+    )
+    file_name = models.CharField(max_length=100, blank=True, null=True)
+    file_size = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return f'Photo of {str(self.student)}'
+
+    def save(self, *args, **kwargs):
+        self.file_name = self.file.name
+        self.file_size = self.file.size
+        super(StudentPhoto, self).save(*args, **kwargs)
+</code></pre>
+<p><code>views.py</code></p>
+<pre><code class="language-python"># FILE UPLOAD
+class StudentPhotoCreateView(CreateAPIView):
+    queryset = StudentPhoto.objects.all()
+    serializer_class = StudentPhotoSerializer
+
+# 2 AND MORE FILES UPLOAD
+class MultipleStudentPhotoCreateView(CreateAPIView):
+    queryset = StudentPhoto.objects.all()
+    serializer_class = StudentPhotoSerializer
+
+    def post(self, request, *args, **kwargs):
+        files = request.FILES.getlist('file')
+
+        for file in files:
+            student_id = request.POST.get('student')
+            file = StudentPhoto(
+                student=Student.objects.get(id=student_id),
+                file=file)
+            file.save()
+
+        return Response(str(request.data), status=status.HTTP_201_CREATED)
+</code></pre>
+<h3 id="_2">Эндпоинт для загрузки файла</h3>
+<p><img alt="1 image" src="../../../images_for_doc/image_upload.png" />
+<img alt="successful image upload" src="../../../images_for_doc/successful_image_upload.png" /></p>
+<h3 id="_3">Эндпоинт для загрузки нескольких файлов</h3>
+<p><img alt="2 photos upload" src="../../../images_for_doc/upload_2_images.png" />
+<img alt="2 photos in folder" src="../../../images_for_doc/tw_images_in_folder.png" />
+<img alt="2 photos in db" src="../../../images_for_doc/both%20images%20in%20db.png" /></p>
 
               
             </article>

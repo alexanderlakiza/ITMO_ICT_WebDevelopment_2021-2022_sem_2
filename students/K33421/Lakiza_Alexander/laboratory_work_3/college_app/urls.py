@@ -43,7 +43,11 @@ urlpatterns = [
 
     # auto filters
     path('mark_ordered/', MarkOrderedFilterView.as_view()),
-    # path('rings_search/', RingSearchFilterView.as_view()),
-    # path('participant_age_range/',
-    #      ParticipantAgeRangeFilterView.as_view())
+    path('student_search/', StudentSearchFilterView.as_view()),
+    path('teacher_room_range/',
+         TeacherRoomRangeFilterView.as_view()),
+
+    # file uploads
+    path('student_photo_upload/', StudentPhotoCreateView.as_view()),
+    path('multiple_student_photo_upload/', MultipleStudentPhotoCreateView.as_view())
 ]

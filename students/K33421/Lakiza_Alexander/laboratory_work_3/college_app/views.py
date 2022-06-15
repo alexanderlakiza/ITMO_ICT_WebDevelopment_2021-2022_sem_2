@@ -1,8 +1,11 @@
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters, status
 from rest_framework.generics import *
+from rest_framework.views import APIView, Response
 from rest_framework.permissions import *
 from .serializers import *
+from .filters import TeacherRoomRangeFilter
+from .pagination import CustomPagination
 
 
 # class IsManager(BasePermission):
@@ -160,6 +163,7 @@ class StudentToGroupCreateView(CreateAPIView):
     # permission_classes = [IsDeputy]
 
 
+# HAND-MADE FILTERS
 class StudentsByGroupListView(ListAPIView):
     serializer_class = StudentSerializer
 
@@ -211,18 +215,43 @@ class MarkOrderedFilterView(ListAPIView):
     queryset = Mark.objects.all()
     serializer_class = MarkSerializer
     filter_backends = (filters.OrderingFilter,)
-    filterset_fields = ('mark', )
+    filterset_fields = ('mark',)
 
 
-# class RingSearchFilterView(generics.ListAPIView):
-#     queryset = Ring.objects.all()
-#     serializer_class = RingSerializer
-#     filter_backends = (filters.SearchFilter,)
-#     search_fields = ('breed', 'show__type')
-#
-#
-# class ParticipantAgeRangeFilterView(generics.ListAPIView):
-#     queryset = Participant.objects.all()
-#     serializer_class = ParticipantSerializer
-#     filterset_class = ParticipantAgeRangeFilter
-#     pagination_class = CustomPagination
+class StudentSearchFilterView(ListAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('last_name',)
+
+
+class TeacherRoomRangeFilterView(ListAPIView):
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer
+    filterset_class = TeacherRoomRangeFilter
+
+    # CUSTOM PAGINATION
+    pagination_class = CustomPagination
+
+
+# FILE UPLOAD
+class StudentPhotoCreateView(CreateAPIView):
+    queryset = StudentPhoto.objects.all()
+    serializer_class = StudentPhotoSerializer
+
+
+class MultipleStudentPhotoCreateView(CreateAPIView):
+    queryset = StudentPhoto.objects.all()
+    serializer_class = StudentPhotoSerializer
+
+    def post(self, request, *args, **kwargs):
+        files = request.FILES.getlist('file')
+
+        for file in files:
+            student_id = request.POST.get('student')
+            file = StudentPhoto(
+                student=Student.objects.get(id=student_id),
+                file=file)
+            file.save()
+
+        return Response(str(request.data), status=status.HTTP_201_CREATED)

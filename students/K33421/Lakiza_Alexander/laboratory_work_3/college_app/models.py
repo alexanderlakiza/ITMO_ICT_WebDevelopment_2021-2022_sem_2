@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from .validators import validate_file_type, validate_file_size
 
 
 class User(AbstractUser):
@@ -21,6 +22,7 @@ class Teacher(models.Model):
     last_name = models.CharField(max_length=30)
     subjects = models.ManyToManyField('Subject', through='SubjectToTeacher')
     room = models.CharField(max_length=10)
+    old_room = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
         return '{} {}'.format(self.first_name, self.last_name)
@@ -93,3 +95,27 @@ class Pair(models.Model):
 
     def __str__(self):
         return '{} {} пара №'.format(self.name_day, self.group, self.pair_number)
+
+
+def get_upload_path(instance, filename):
+    return f'students_photos/photos_of_student_{instance.student.id}/{filename}'
+
+
+class StudentPhoto(models.Model):
+    student = models.ForeignKey('Student',
+                                    on_delete=models.CASCADE,
+                                    related_name='student_photos')
+    file = models.FileField(
+        validators=[validate_file_size, validate_file_type],
+        upload_to=get_upload_path
+    )
+    file_name = models.CharField(max_length=100, blank=True, null=True)
+    file_size = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return f'Photo of {str(self.student)}'
+
+    def save(self, *args, **kwargs):
+        self.file_name = self.file.name
+        self.file_size = self.file.size
+        super(StudentPhoto, self).save(*args, **kwargs)
