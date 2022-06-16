@@ -74,6 +74,11 @@ nav:
           - "Pagination": semestr2/lab2/2_2.md
           - "File upload": semestr2/lab2/2_3.md
           - "Signals": semestr2/lab2/2_4.md
+      - Lab3:
+          - "Model tests": semestr2/lab3/3_1.md
+          - "Get tests": semestr2/lab3/3_2.md
+          - "Post tests": semestr2/lab3/3_3.md
+          - "Patch tests": semestr2/lab3/3_4.md
 
 theme:
   name: material
