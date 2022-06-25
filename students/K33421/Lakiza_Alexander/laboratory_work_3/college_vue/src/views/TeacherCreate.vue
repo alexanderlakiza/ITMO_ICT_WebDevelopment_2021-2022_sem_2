@@ -63,7 +63,7 @@ export default {
   methods: {
     async getSubj () {
       await this.axios
-        .get('http://127.0.0.1:8000/subject/list/')
+        .get('http://127.0.0.1:8000/all_subjects/')
         .then((res) => {
           const data = res.data
           console.log(res.data)
@@ -87,7 +87,7 @@ export default {
           console.log(error)
         })
       await this.axios
-        .get('http://127.0.0.1:8000/teacher/list/')
+        .get('http://127.0.0.1:8000/all_teachers/')
         .then((res) => {
           this.teacher_id = res.data[res.data.length - 1].id
         })
@@ -95,7 +95,8 @@ export default {
           console.log(error)
         })
       for (const sub of this.addSub.subject) {
-        console.log(sub)
+        console.log(this.subject)
+        console.log(this.teacher)
         await this.axios
           .post('http://127.0.0.1:8000/subteach/create/', {
             teacher: this.teacher_id,

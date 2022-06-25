@@ -33,9 +33,10 @@
               {{ sub.label }}
             </option>
           </v-select>
-          <v-text-field
+          <v-select
             label="Enter mark"
             v-model="addForm.mark"
+            :items="markTypes"
           />
           <v-btn color="primary" @click="update">update</v-btn>
         </v-col>
@@ -56,7 +57,8 @@ export default {
       student: '',
       subject: '',
       mark: ''
-    }
+    },
+    markTypes: [5, 4, 3, 2]
   }),
   created () {
     this.st_id = this.$route.params.mark_id
@@ -70,11 +72,12 @@ export default {
         console.log(this.st_cur)
       })
     this.axios
-      .get('http://127.0.0.1:8000/student/list/')
+      .get('http://127.0.0.1:8000/all_students/')
       .then((res) => {
         const data = res.data
         for (let i = 0; i < res.data.length; i++) {
-          const label = `${data[i].first_name} ${data[i].last_name} ${data[i].group}`
+          console.log(data[i].group)
+          const label = `${data[i].first_name} ${data[i].last_name} ${data[i].group[0].name}`
           const id = data[i].id
           this.students.push({ label: label, code: id })
         }
@@ -83,7 +86,7 @@ export default {
         console.log(error)
       })
     this.axios
-      .get('http://127.0.0.1:8000/subject/list/')
+      .get('http://127.0.0.1:8000/all_subjects/')
       .then((res) => {
         const data = res.data
         console.log(res.data)
@@ -109,6 +112,7 @@ export default {
         .catch((error) => {
           console.log(error)
         })
+      await this.$router.push('/mark')
     }
   }
 }

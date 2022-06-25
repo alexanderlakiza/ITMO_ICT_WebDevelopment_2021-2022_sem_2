@@ -35,9 +35,10 @@
               {{ sub.label }}
             </option>
           </v-select>
-          <v-text-field
+          <v-select
             label="Enter mark"
             v-model="addForm.mark"
+            :items="markTypes"
           />
           <v-btn color="primary" @click="add">add</v-btn>
         </v-col>
@@ -55,13 +56,14 @@ export default {
     addForm: {
       student: '',
       subject: '',
-      group: ''
-    }
+      mark: ''
+    },
+    markTypes: [5, 4, 3, 2]
   }),
   methods: {
     async getStudent () {
       await this.axios
-        .get('http://127.0.0.1:8000/student/list/')
+        .get('http://127.0.0.1:8000/all_students/')
         .then((res) => {
           const data = res.data
           for (let i = 0; i < res.data.length; i++) {
@@ -76,7 +78,7 @@ export default {
     },
     async getSubj () {
       await this.axios
-        .get('http://127.0.0.1:8000/subject/list/')
+        .get('http://127.0.0.1:8000/all_subjects/')
         .then((res) => {
           const data = res.data
           console.log(res.data)
@@ -101,6 +103,7 @@ export default {
         .catch((error) => {
           console.log(error)
         })
+      await this.$router.push('/mark')
     }
   }
 }

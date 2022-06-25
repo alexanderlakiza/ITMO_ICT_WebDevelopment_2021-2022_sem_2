@@ -11,14 +11,17 @@ urlpatterns = [
     path('student/list/', StudentListView.as_view()),
     path('student/<int:pk>/', StudentAllView.as_view(), name='student'),
     path('student/create/', StudentCreateView.as_view(), name='student_create'),
+    path('all_students/', AllStudentListView.as_view()),
 
     path('teacher/list/', TeacherListView.as_view()),
     path('teacher/<int:pk>/', TeacherAllView.as_view(), name='teacher'),
     path('teacher/create/', TeacherCreateView.as_view()),
+    path('all_teachers/', AllTeacherListView.as_view()),
 
     path('subject/list/', SubjectListView.as_view()),
     path('subject/<int:pk>/', SubjectAllView.as_view(), name='subject'),
     path('subject/create/', SubjectCreateView.as_view()),
+    path('all_subjects/', AllSubjectListView.as_view()),
 
     path('subteach/list/', SubjectToTeacherListView.as_view()),
     path('subteach/<int:pk>/', SubjectToTeacherAllView.as_view()),
@@ -31,6 +34,7 @@ urlpatterns = [
     path('group/list/', GroupListView.as_view()),
     path('group/<int:pk>/', GroupAllView.as_view(), name='group'),
     path('group/create/', GroupCreateView.as_view()),
+    path('all_groups/', AllGroupListView.as_view()),
 
     path('stugroup/list/', StudentToGroupListView.as_view()),
     path('stugroup/<int:pk>/', StudentToGroupAllView.as_view(), name='student_group'),

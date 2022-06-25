@@ -5,8 +5,62 @@
       <v-btn @click='$router.push("/deputy")' elevation="4">Home</v-btn>&nbsp;&nbsp;
       <v-btn @click='$router.push("/group/create")' elevation="4">Create group</v-btn>
     </div>
+    <p></p>
+    <h2>Groups</h2>
+    <div>
+      <v-container fluid>
+        <v-row no-gutters>
+          <v-col
+          md="3">
+            <p><b>Search groups by name</b></p>
+            <v-form
+            @submit.prevent="apply"
+          >
+              <v-text-field
+                label="Enter group's name"
+                solo
+                v-model="GroupsSearchForm.groupName"
+              />
+            </v-form>
+          </v-col>
+          <v-col
+            md="1">
+          </v-col>
+          <v-col
+            md="3">
+            <p><b>Sort groups by name</b></p>
+            <v-form
+            @submit.prevent="apply"
+          >
+              <v-select
+                label="Choose sorting type"
+                filled
+                :items="sortOptions"
+                v-model="GroupsSortForm.sortType"
+              />
+            </v-form>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            md="3">
+            <p>
+            <v-btn color="primary" @click='apply' elevation="4">Apply</v-btn>
+            </p>
+          </v-col>
+          <v-col
+            md="1">
+          </v-col>
+          <v-col
+            md="3">
+            <p v-if="GroupsSearchForm.groupName !== '' || GroupsSortForm.sortType !== ''">
+              <v-btn color="error" @click='reset'>Reset</v-btn>
+              </p>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
     <v-simple-table>
-      <h2>Groups</h2>
       <v-data-table-header>Groups</v-data-table-header>
       <tr>
         <td><strong>Group Name</strong></td>
@@ -31,26 +85,97 @@
         </td>
       </tr>
     </v-simple-table>
+    <div>
+      <div v-if="prevPage != null" class="prevPageButton">
+        <v-btn color="primary" @click='prevPageLoad'>Previous page</v-btn>&nbsp;&nbsp;
+      </div>
+      <div v-if="nextPage != null" class="prevPageButton">
+        <v-btn color="primary" @click='nextPageLoad'>Next page</v-btn>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'GroupCreate',
   data: () => ({
-    groups: []
+    GroupsSearchForm: {
+      groupName: ''
+    },
+    GroupsSortForm: {
+      sortType: ''
+    },
+    groups: [],
+    nextPage: '',
+    prevPage: '',
+    sortOptions: ['Name Ascending', 'Name Descending'],
+    orderBy: ''
   }),
+  name: 'GroupCreate',
+  // data: () => ({
+  //   groups: []
+  // }),
   created () {
     this.axios
       .get('http://127.0.0.1:8000/group/list/')
       .then((res) => {
-        this.groups = res.data
+        this.groups = res.data.results
+        this.nextPage = res.data.next
+        this.prevPage = res.data.previous
       })
       .catch((error) => {
         console.log(error)
       })
   },
   methods: {
+    async reset () {
+      await this.axios
+        .get('http://127.0.0.1:8000/group/list/')
+        .then((res) => {
+          this.groups = res.data.results
+          this.nextPage = res.data.next
+          this.prevPage = res.data.previous
+          this.GroupsSearchForm.groupName = ''
+          this.GroupsSortForm.sortType = ''
+          this.orderBy = ''
+        })
+    },
+    async apply () {
+      if (this.GroupsSortForm.sortType === 'Name Ascending') {
+        this.orderBy = 'name'
+      } else if (this.GroupsSortForm.sortType === 'Name Descending') {
+        this.orderBy = '-name'
+      }
+      await this.axios
+        .get('http://127.0.0.1:8000/group/list/' + '?search=' + this.GroupsSearchForm.groupName + '&ordering=' + this.orderBy)
+        .then((res) => {
+          this.groups = res.data.results
+          this.nextPage = res.data.next
+          this.prevPage = res.data.previous
+        })
+        .catch((error) => {
+          console.log(error)
+          alert('Invalid group name')
+        })
+    },
+    async prevPageLoad () {
+      await this.axios
+        .get(this.prevPage)
+        .then((res) => {
+          this.groups = res.data.results
+          this.nextPage = res.data.next
+          this.prevPage = res.data.previous
+        })
+    },
+    async nextPageLoad () {
+      await this.axios
+        .get(this.nextPage)
+        .then((res) => {
+          this.groups = res.data.results
+          this.nextPage = res.data.next
+          this.prevPage = res.data.previous
+        })
+    },
     async deleteElem (elem) {
       await this.axios
         .delete(`http://127.0.0.1:8000/group/${elem}`)

@@ -2,7 +2,7 @@
   <div>
     <div>
       <v-btn @click='$router.go(-1)'>Back</v-btn>&nbsp;&nbsp;
-      <v-btn @click='$router.push("/manager")'>Home</v-btn>
+      <v-btn @click='$router.push("/deputy")'>Home</v-btn>
     </div>
     <v-form
       @submit.prevent="create"
@@ -88,7 +88,7 @@ export default {
   }),
   async created () {
     await this.axios
-      .get('http://127.0.0.1:8000/teacher/list/')
+      .get('http://127.0.0.1:8000/all_teachers/')
       .then((res) => {
         const data = res.data
         for (let i = 0; i < res.data.length; i++) {
@@ -101,7 +101,7 @@ export default {
         console.log(error)
       })
     await this.axios
-      .get('http://127.0.0.1:8000/group/list/')
+      .get('http://127.0.0.1:8000/all_groups/')
       .then((res) => {
         const data = res.data
         for (let i = 0; i < res.data.length; i++) {
@@ -114,7 +114,7 @@ export default {
         console.log(error)
       })
     await this.axios
-      .get('http://127.0.0.1:8000/subject/list/')
+      .get('http://127.0.0.1:8000/all_subjects/')
       .then((res) => {
         const data = res.data
         for (let i = 0; i < res.data.length; i++) {
@@ -138,7 +138,7 @@ export default {
         .catch((error) => {
           console.log(error)
         })
-      await this.$router.push('/manager')
+      await this.$router.push('/pair')
     }
   }
 }

@@ -47,8 +47,38 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = "__all__"
 
+class StudentPartedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = "__all__"
+
+
+class MarkFullViewSerializer(serializers.ModelSerializer):
+    subject = SubjectPartedSerializer(read_only=True)
+    student = StudentSerializer(read_only=True)
+
+    class Meta:
+        model = Mark
+        fields = "__all__"
+
 
 class PairSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pair
+        fields = "__all__"
+
+
+class TeacherPartedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teacher
+        fields = ["id", "first_name", 'last_name']
+
+
+class PairFullViewSerializer(serializers.ModelSerializer):
+    subject = SubjectPartedSerializer(read_only=True)
+    teacher = TeacherPartedSerializer(read_only=True)
+    group = GroupPartedSerializer(read_only=True)
+
     class Meta:
         model = Pair
         fields = "__all__"

@@ -1,7 +1,7 @@
 site_name: College
 nav:
   - Info: index.md
-  - Server:
+  - Semester 1:
       - Frontend:
             - auth:
                   - "sign in": frontend/auth/signin.md
@@ -64,7 +64,7 @@ nav:
           - "pair list": pair/list.md
           - "pair create": pair/create.md
           - "pair delete/update/retrieve": pair/edit.md
-  - Semester2:
+  - Semester 2:
       - Lab1:
           - "Migrations in Docker container": semestr2/lab1/1_1.md
           - "Orchestration": semestr2/lab1/1_2.md
@@ -79,6 +79,11 @@ nav:
           - "Get tests": semestr2/lab3/3_2.md
           - "Post tests": semestr2/lab3/3_3.md
           - "Patch tests": semestr2/lab3/3_4.md
+      - Lab4:
+          - "Interfaces of filters": semestr2/lab4/4.md
+  - Курсовой проект:
+      - Описание задачи: semestr2/course/description.md
+      - Реализация задачи: semestr2/course/final.md
 
 theme:
   name: material

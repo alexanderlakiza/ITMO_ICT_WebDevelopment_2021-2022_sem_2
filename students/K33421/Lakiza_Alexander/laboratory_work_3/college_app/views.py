@@ -4,8 +4,9 @@ from rest_framework.generics import *
 from rest_framework.views import APIView, Response
 from rest_framework.permissions import *
 from .serializers import *
-from .filters import TeacherRoomRangeFilter
+from .filters import TeacherRoomRangeFilter, MarksFilters, PairsFilters
 from .pagination import CustomPagination
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 # class IsManager(BasePermission):
@@ -19,10 +20,21 @@ from .pagination import CustomPagination
 #         return request.user.type == 'deputy'
 
 
-class StudentListView(ListAPIView):
+# STUDENTS
+class AllStudentListView(ListAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+
+
+class StudentListView(AllStudentListView):
     # permission_classes = [AllowAny]
+    pagination_class = CustomPagination
+
+    # filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    # search_fields = ('first_name', 'last_name', 'group__name',)
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    ordering_fields = ['first_name', 'last_name', 'group__name']
+    filterset_fields = ['first_name', 'last_name', 'group__name']
 
 
 class StudentAllView(RetrieveUpdateDestroyAPIView):
@@ -37,10 +49,19 @@ class StudentCreateView(CreateAPIView):
     # permission_classes = [IsDeputy]
 
 
-class TeacherListView(ListAPIView):
+# TEACHERS
+class AllTeacherListView(ListAPIView):
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
+
+
+class TeacherListView(AllTeacherListView):
     # permission_classes = [AllowAny]
+    pagination_class = CustomPagination
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    ordering_fields = ['first_name', 'last_name', 'room', 'subjects__name']
+    filterset_fields = ['first_name', 'last_name', 'room', 'subjects__name']
+    filterset_class = TeacherRoomRangeFilter
 
 
 class TeacherAllView(RetrieveUpdateDestroyAPIView):
@@ -55,10 +76,18 @@ class TeacherCreateView(CreateAPIView):
     # permission_classes = [IsDeputy]
 
 
-class SubjectListView(ListAPIView):
+# SUBJECTS
+class AllSubjectListView(ListAPIView):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
+
+
+class SubjectListView(AllSubjectListView):
     # permission_classes = [AllowAny]
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    search_fields = ('name',)
+
+    pagination_class = CustomPagination
 
 
 class SubjectAllView(RetrieveUpdateDestroyAPIView):
@@ -73,10 +102,17 @@ class SubjectCreateView(CreateAPIView):
     # permission_classes = [IsDeputy]
 
 
+# MARKS
 class MarkListView(ListAPIView):
     queryset = Mark.objects.all()
-    serializer_class = MarkSerializer
+    serializer_class = MarkFullViewSerializer
     # permission_classes = [AllowAny]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = ['student__last_name', 'student__first_name', 'mark', 'subject__name', 'student__group__name']
+    ordering_fields = ['student__last_name', 'student__first_name', 'mark', 'subject__name', 'student__group__name']
+    filterset_class = MarksFilters
+
+    pagination_class = CustomPagination
 
 
 class MarkAllView(RetrieveUpdateDestroyAPIView):
@@ -91,10 +127,18 @@ class MarkCreateView(CreateAPIView):
     # permission_classes = [IsDeputy]
 
 
+# PAIRS
 class PairListView(ListAPIView):
     queryset = Pair.objects.all()
-    serializer_class = PairSerializer
+    serializer_class = PairFullViewSerializer
     # permission_classes = [AllowAny]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+
+    filterset_fields = ['subject__name', 'group__name', 'pair_number', 'room', 'name_day', 'teacher__last_name']
+    ordering_fields = ['subject__name', 'group__name', 'pair_number', 'room', 'teacher__last_name']
+    filterset_class = PairsFilters
+
+    pagination_class = CustomPagination
 
 
 class PairAllView(RetrieveUpdateDestroyAPIView):
@@ -109,6 +153,7 @@ class PairCreateView(CreateAPIView):
     # permission_classes = [IsManager]
 
 
+# SubjectToTeacher
 class SubjectToTeacherListView(ListAPIView):
     queryset = SubjectToTeacher.objects.all()
     serializer_class = SubjectToTeacherSerializer
@@ -127,10 +172,18 @@ class SubjectToTeacherCreateView(CreateAPIView):
     # permission_classes = [IsDeputy]
 
 
-class GroupListView(ListAPIView):
+# GROUPS
+class AllGroupListView(ListAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+
+class GroupListView(AllGroupListView):
     # permission_classes = [AllowAny]
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    search_fields = ('name',)
+
+    pagination_class = CustomPagination
 
 
 class GroupCreateView(CreateAPIView):
@@ -145,6 +198,7 @@ class GroupAllView(RetrieveUpdateDestroyAPIView):
     # permission_classes = [IsDeputy]
 
 
+# StudentToGroup
 class StudentToGroupListView(ListAPIView):
     queryset = StudentToGroup.objects.all()
     serializer_class = StudentToGroupSerializer

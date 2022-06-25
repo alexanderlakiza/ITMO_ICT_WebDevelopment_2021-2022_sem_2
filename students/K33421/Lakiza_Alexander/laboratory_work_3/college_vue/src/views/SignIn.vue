@@ -41,7 +41,8 @@ export default {
       const token = await this.axios
         .post('http://127.0.0.1:8000/auth/token/login/', this.signInForm)
         .then((res) => {
-          console.log(res)
+          console.log(res.data.auth_token)
+          // console.log(res)
           return res.data.auth_token
         })
         .catch((error) => {

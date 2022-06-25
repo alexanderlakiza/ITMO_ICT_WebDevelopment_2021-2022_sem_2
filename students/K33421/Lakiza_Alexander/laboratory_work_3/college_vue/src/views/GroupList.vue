@@ -45,13 +45,14 @@ export default {
     await this.axios
       .get(`http://127.0.0.1:8000/group/${this.gr_id}`)
       .then((res) => {
-        console.log(res.data)
+        console.log('haha')
+        console.log(res.data.name)
         this.cur_gr_name = res.data.name
       })
     await this.axios
       .get('http://127.0.0.1:8000/student/list/')
       .then((res) => {
-        this.students = res.data
+        this.students = res.data.results
       })
       .catch((error) => {
         console.log(error)

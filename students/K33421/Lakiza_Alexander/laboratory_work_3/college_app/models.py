@@ -73,7 +73,7 @@ class Mark(models.Model):
     mark = models.IntegerField()
 
     def __str__(self):
-        return '{} {}'.format(self.student.last_name, self.subject)
+        return '{} {}'.format(self.student.last_name, self.subject, self.mark)
 
 
 class Pair(models.Model):

@@ -21,14 +21,14 @@
           />
           <v-select
             label="Choose group"
-            v-model="addSub.subject"
+            v-model="addSub.groups"
             multiple="multiple"
             @click="getSubj"
-            :items="subjects"
+            :items="groups"
             item-text="label"
             item-value="code"
             :reduce="option => option.code">
-            <option v-for="sub in subjects" :key="sub.id">
+            <option v-for="sub in groups" :key="sub.id">
               {{ sub.label }}
             </option>
           </v-select>
@@ -43,30 +43,29 @@
 export default {
   name: 'StudentCreate',
   data: () => ({
-    teacher_id: '',
-    subjects: [],
+    student_id: '',
+    groups: [],
     addForm: {
       first_name: '',
       last_name: '',
-      room: '',
-      subjects: {}
+      groups: {}
     },
     addSub: {
-      teacher: '',
-      subject: []
+      student: '',
+      groups: []
     }
   }),
   methods: {
     async getSubj () {
       await this.axios
-        .get('http://127.0.0.1:8000/group/list/')
+        .get('http://127.0.0.1:8000/all_groups/')
         .then((res) => {
           const data = res.data
           console.log(res.data)
           for (let i = 0; i < res.data.length; i++) {
             const label = `${data[i].name}`
             const id = data[i].id
-            this.subjects.push({ label: label, code: id })
+            this.groups.push({ label: label, code: id })
           }
         })
         .catch((error) => {
@@ -83,17 +82,17 @@ export default {
           console.log(error)
         })
       await this.axios
-        .get('http://127.0.0.1:8000/student/list/')
+        .get('http://127.0.0.1:8000/all_students/')
         .then((res) => {
-          this.teacher_id = res.data[res.data.length - 1].id
+          this.student_id = res.data[res.data.length - 1].id
         })
         .catch((error) => {
           console.log(error)
         })
-      for (const sub of this.addSub.subject) {
+      for (const sub of this.addSub.groups) {
         await this.axios
           .post('http://127.0.0.1:8000/stugroup/create/', {
-            student: this.teacher_id,
+            student: this.student_id,
             group: sub
           })
           .then((res) => {

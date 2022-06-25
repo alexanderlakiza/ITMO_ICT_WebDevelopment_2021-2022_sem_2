@@ -51,6 +51,9 @@
         <v-col>
           <v-btn small @click='$router.push("/pair")'>Pair List</v-btn>
         </v-col>
+        <v-col>
+          <v-btn small @click='$router.push("/pair/create")'>Pair Create</v-btn>
+        </v-col>
       </v-col>
     </v-row>
   </div>

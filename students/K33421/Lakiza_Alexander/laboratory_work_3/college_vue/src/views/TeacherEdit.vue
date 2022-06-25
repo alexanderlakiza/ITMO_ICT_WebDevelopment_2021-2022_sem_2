@@ -86,7 +86,7 @@ export default {
         console.log(res.data)
       })
     this.axios
-      .get('http://127.0.0.1:8000/subject/list/')
+      .get('http://127.0.0.1:8000/all_subjects/')
       .then((res) => {
         const data = res.data
         console.log(res.data)
@@ -142,8 +142,7 @@ export default {
             console.log(error)
           })
       }
-      this.$refs.addForm.reset()
-      this.$router.go(0)
+      await this.$router.push('/teacher')
     }
   }
 }

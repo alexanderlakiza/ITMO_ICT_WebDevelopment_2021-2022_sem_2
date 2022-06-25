@@ -82,7 +82,7 @@ export default {
         console.log(res.data)
       })
     this.axios
-      .get('http://127.0.0.1:8000/group/list/')
+      .get('http://127.0.0.1:8000/all_groups/')
       .then((res) => {
         const data = res.data
         console.log(res.data)

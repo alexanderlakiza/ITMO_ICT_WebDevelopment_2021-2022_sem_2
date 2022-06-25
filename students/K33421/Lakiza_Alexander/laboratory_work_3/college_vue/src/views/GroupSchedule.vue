@@ -166,7 +166,7 @@ export default {
     await this.axios
       .get('http://127.0.0.1:8000/pair/list/')
       .then((res) => {
-        this.pairs = res.data
+        this.pairs = res.data.results
       })
       .catch((error) => {
         console.log(error)
@@ -175,7 +175,7 @@ export default {
       .get('http://127.0.0.1:8000/group/list/')
       .then((res) => {
         console.log('this.groups', res.data)
-        this.groups = res.data
+        this.groups = res.data.results
       })
       .catch((error) => {
         console.log(error)
@@ -184,7 +184,7 @@ export default {
       .get('http://127.0.0.1:8000/teacher/list/')
       .then((res) => {
         console.log('this.teachers', res.data)
-        this.teachers = res.data
+        this.teachers = res.data.results
       })
       .catch((error) => {
         console.log(error)
@@ -193,7 +193,7 @@ export default {
       .get('http://127.0.0.1:8000/subject/list')
       .then((res) => {
         console.log('this.subjects', res.data)
-        this.subjects = res.data
+        this.subjects = res.data.results
       })
       .catch((error) => {
         console.log(error)

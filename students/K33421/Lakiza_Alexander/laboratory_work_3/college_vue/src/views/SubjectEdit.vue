@@ -46,15 +46,16 @@ export default {
   methods: {
     async update () {
       await this.axios
-        .put(`http://127.0.0.1:8000/subject/${this.st_id}`, this.addForm)
+        .put(`http://127.0.0.1:8000/subject/${this.st_id}/`, this.addForm)
         .then((res) => {
           console.log(res)
           this.$refs.addForm.reset()
-          this.$router.go(0)
+          this.$router.go(-1)
         })
         .catch((error) => {
           console.log(error)
         })
+      await this.$router.push('/subject')
     }
   }
 }
