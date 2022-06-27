@@ -1,6 +1,12 @@
 site_name: College
 nav:
   - Info: index.md
+  - Курсовой проект:
+      - Титульный лист: semestr2/course/intro.md
+      - Введение: semestr2/course/description.md
+      - Ход работы: semestr2/course/progress.md
+      - Итоговый функционал приложения: semestr2/course/final.md
+      - Заключение: semestr2/course/zacluchenie.md
   - Semester 1:
       - Frontend:
             - auth:
@@ -81,9 +87,6 @@ nav:
           - "Patch tests": semestr2/lab3/3_4.md
       - Lab4:
           - "Interfaces of filters": semestr2/lab4/4.md
-  - Курсовой проект:
-      - Описание задачи: semestr2/course/description.md
-      - Реализация задачи: semestr2/course/final.md
 
 theme:
   name: material

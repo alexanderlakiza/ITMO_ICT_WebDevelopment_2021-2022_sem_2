@@ -47,6 +47,7 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = "__all__"
 
+
 class StudentPartedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
@@ -112,3 +113,17 @@ class StudentPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentPhoto
         fields = ['student', 'file']
+
+
+class GroupToSpecialtySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GroupToSpecialty
+        fields = "__all__"
+
+
+class SpecialtySerializer(serializers.ModelSerializer):
+    groups = GroupSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Specialty
+        fields = "__all__"

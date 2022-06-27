@@ -25,6 +25,9 @@ import PairCreate from '../views/PairCreate'
 import PairEdit from '../views/PairEdit'
 import GroupList from '../views/GroupList'
 import GroupSchedule from '../views/GroupSchedule'
+import Spec from '../views/Spec'
+import SpecCreate from '../views/SpecCreate'
+import SpecEdit from '../views/SpecEdit'
 
 Vue.use(VueRouter)
 
@@ -162,6 +165,21 @@ const routes = [
     path: '/signin',
     name: 'SignIn',
     component: SignIn
+  },
+  {
+    path: '/spec',
+    name: 'Spec',
+    component: Spec
+  },
+  {
+    path: '/spec/create',
+    name: 'SpecCreate',
+    component: SpecCreate
+  },
+  {
+    path: '/spec/:spec_id',
+    name: 'SpecEdit',
+    component: SpecEdit
   }
 ]
 

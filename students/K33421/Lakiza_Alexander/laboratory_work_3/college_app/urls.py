@@ -4,6 +4,7 @@ from .views import *
 app_name = "college_app"
 
 urlpatterns = [
+    path('all_pairs/', AllPairListView.as_view()),
     path('pair/list/', PairListView.as_view()),
     path('pair/<int:pk>/', PairAllView.as_view(), name='pair'),
     path('pair/create/', PairCreateView.as_view(), name='pair_create'),
@@ -39,6 +40,15 @@ urlpatterns = [
     path('stugroup/list/', StudentToGroupListView.as_view()),
     path('stugroup/<int:pk>/', StudentToGroupAllView.as_view(), name='student_group'),
     path('stugroup/create/', StudentToGroupCreateView.as_view()),
+
+    path('spec/list/', SpecialtyListView.as_view()),
+    path('spec/<int:pk>/', SpecialtyALlView.as_view()),
+    path('spec/create/', SpecialtyCreateView.as_view()),
+
+    path('groupspec/list/', GrToSpecListView.as_view()),
+    path('groupspec/<int:pk>/', GrToSpecAllView.as_view()),
+    path('groupspec/create/', GrToSpecCreateView.as_view()),
+    path('all_specs/', SpecialtyFullView.as_view()),
 
     # hand filters
     path('student_by_group/', StudentsByGroupListView.as_view()),

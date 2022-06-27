@@ -119,3 +119,20 @@ class StudentPhoto(models.Model):
         self.file_name = self.file.name
         self.file_size = self.file.size
         super(StudentPhoto, self).save(*args, **kwargs)
+
+
+class GroupToSpecialty(models.Model):
+    specialty = models.ForeignKey('Specialty', on_delete=models.CASCADE)
+    group = models.ForeignKey('Group', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.group} -> {self.specialty}"
+
+
+class Specialty(models.Model):
+    name = models.CharField(max_length=100)
+    it_specialty = models.BooleanField()
+    groups = models.ManyToManyField('Group', through='GroupToSpecialty')
+
+    def __str__(self):
+        return f"{self.name}"

@@ -7,7 +7,7 @@
           <v-btn small @click='$router.push("/student")'>Student List</v-btn>
         </v-col>
         <v-col>
-          <v-btn small @click='$router.push("/student/create")'>Student Create</v-btn>
+          <v-btn small @click='$router.push("/student/create")'>Create Student</v-btn>
         </v-col>
       </v-col>
       <v-col>
@@ -16,7 +16,7 @@
           <v-btn small @click='$router.push("/teacher")'>Teacher List</v-btn>
         </v-col>
         <v-col>
-          <v-btn small @click='$router.push("/teacher/create")'>Teacher Create</v-btn>
+          <v-btn small @click='$router.push("/teacher/create")'>Create Teacher</v-btn>
         </v-col>
       </v-col>
       <v-col>
@@ -25,7 +25,7 @@
           <v-btn small @click='$router.push("/subject")'>Subject List</v-btn>
         </v-col>
         <v-col>
-          <v-btn small @click='$router.push("/subject/create")'>Subject Create</v-btn>
+          <v-btn small @click='$router.push("/subject/create")'>Create Subject</v-btn>
         </v-col>
       </v-col>
       <v-col>
@@ -34,7 +34,7 @@
           <v-btn small @click='$router.push("/mark")'>Marks List</v-btn>
         </v-col>
         <v-col>
-          <v-btn small @click='$router.push("/mark/create")'>Marks Create</v-btn>
+          <v-btn small @click='$router.push("/mark/create")'>Create Mark</v-btn>
         </v-col>
       </v-col>
       <v-col>
@@ -43,7 +43,16 @@
           <v-btn small @click='$router.push("/group")'>Groups List</v-btn>
         </v-col>
         <v-col>
-          <v-btn small @click='$router.push("/group/create")'>Groups Create</v-btn>
+          <v-btn small @click='$router.push("/group/create")'>Create Group</v-btn>
+        </v-col>
+      </v-col>
+      <v-col>
+        <h3>Specialties</h3>
+        <v-col>
+          <v-btn small @click='$router.push("/spec")'>Specialties List</v-btn>
+        </v-col>
+        <v-col>
+          <v-btn small @click='$router.push("/spec/create")'>Create Specialty</v-btn>
         </v-col>
       </v-col>
       <v-col>
@@ -52,7 +61,7 @@
           <v-btn small @click='$router.push("/pair")'>Pair List</v-btn>
         </v-col>
         <v-col>
-          <v-btn small @click='$router.push("/pair/create")'>Pair Create</v-btn>
+          <v-btn small @click='$router.push("/pair/create")'>Create Pair</v-btn>
         </v-col>
       </v-col>
     </v-row>

@@ -164,36 +164,36 @@ export default {
         this.cur_gr_name = res.data.name
       })
     await this.axios
-      .get('http://127.0.0.1:8000/pair/list/')
+      .get('http://127.0.0.1:8000/all_pairs/')
       .then((res) => {
-        this.pairs = res.data.results
+        this.pairs = res.data
       })
       .catch((error) => {
         console.log(error)
       })
     await this.axios
-      .get('http://127.0.0.1:8000/group/list/')
+      .get('http://127.0.0.1:8000/all_groups/')
       .then((res) => {
         console.log('this.groups', res.data)
-        this.groups = res.data.results
+        this.groups = res.data
       })
       .catch((error) => {
         console.log(error)
       })
     await this.axios
-      .get('http://127.0.0.1:8000/teacher/list/')
+      .get('http://127.0.0.1:8000/all_teachers/')
       .then((res) => {
         console.log('this.teachers', res.data)
-        this.teachers = res.data.results
+        this.teachers = res.data
       })
       .catch((error) => {
         console.log(error)
       })
     await this.axios
-      .get('http://127.0.0.1:8000/subject/list')
+      .get('http://127.0.0.1:8000/all_subjects/')
       .then((res) => {
         console.log('this.subjects', res.data)
-        this.subjects = res.data.results
+        this.subjects = res.data
       })
       .catch((error) => {
         console.log(error)

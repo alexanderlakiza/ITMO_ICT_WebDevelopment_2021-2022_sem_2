@@ -128,6 +128,11 @@ class MarkCreateView(CreateAPIView):
 
 
 # PAIRS
+class AllPairListView(ListAPIView):
+    queryset = Pair.objects.all()
+    serializer_class = PairSerializer
+
+
 class PairListView(ListAPIView):
     queryset = Pair.objects.all()
     serializer_class = PairFullViewSerializer
@@ -214,6 +219,50 @@ class StudentToGroupAllView(RetrieveUpdateDestroyAPIView):
 class StudentToGroupCreateView(CreateAPIView):
     queryset = StudentToGroup.objects.all()
     serializer_class = StudentToGroupSerializer
+    # permission_classes = [IsDeputy]
+
+
+# GroupToSpecialty
+class GrToSpecListView(ListAPIView):
+    queryset = GroupToSpecialty.objects.all()
+    serializer_class = GroupToSpecialtySerializer
+
+
+class GrToSpecAllView(RetrieveUpdateDestroyAPIView):
+    queryset = GroupToSpecialty.objects.all()
+    serializer_class = GroupToSpecialtySerializer
+    # permission_classes = [IsDeputy]
+
+
+class GrToSpecCreateView(CreateAPIView):
+    queryset = GroupToSpecialty.objects.all()
+    serializer_class = GroupToSpecialtySerializer
+    # permission_classes = [IsDeputy]
+
+
+# SPECIALTY
+class SpecialtyFullView(ListAPIView):
+    queryset = Specialty.objects.all()
+    serializer_class = SpecialtySerializer
+
+
+class SpecialtyListView(ListAPIView):
+    queryset = Specialty.objects.all()
+    serializer_class = SpecialtySerializer
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    ordering_fields = ['name', 'groups__name']
+    filterset_fields = ['name', 'groups__name', 'it_specialty']
+    pagination_class = CustomPagination
+
+
+class SpecialtyALlView(RetrieveUpdateDestroyAPIView):
+    queryset = Specialty.objects.all()
+    serializer_class = SpecialtySerializer
+
+
+class SpecialtyCreateView(CreateAPIView):
+    queryset = Specialty.objects.all()
+    serializer_class = SpecialtySerializer
     # permission_classes = [IsDeputy]
 
 
